@@ -3,7 +3,7 @@ const fs = require ('fs');
 const app = express();
 
 app.use(express.json());
-app.listen(3000)
+app.listen(3003)
 
 const data = [
     {
@@ -23,26 +23,25 @@ const data = [
     },
 ]
 
-app.get('/todolist/:id', (req, res) =>{
+app.delete('/todolist/deletar/:id', function (req, res){
     const { id } = req.params
+    let notaIndex = data.findIndex(f => f.id == id)
+    data.splice(notaIndex, 1)
+    res.send("Nota deletada!")
+})
+
+app.get('/todolist/:id', (req, res) => {
+    const { id } = req.paramss
     let nota = data.find(f => f.id == id)
     res.send(nota)
 })
 
-app.get('/todolist', function (req, res) {
-    res.send(data)
-  })
-
-// Não está funcionando!!!
-app.post('/todolist/add'), function (req, res) {
+app.post('/todolist/nota/adicionar', function (req, res) {
     const body = req.body   
     data.push(body)
     res.send("Nota adicionada!")
-}
-// Não está funcionando!!!
-app.delete('/todolist/deletar/:id', function (req, res){
-    const { id } = req.params
-    let notaIndex = data.findIndex(f => f.id == id)
-    data.slice(notaIndex)
-    res.send("Nota deletada!")
 })
+
+app.get('/todolist', function (req, res) {  
+    res.send(data)
+  })
